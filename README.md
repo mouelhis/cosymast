@@ -1,6 +1,6 @@
 # CoSyMA: A Tool for Controller Synthesis Using Multi-scale Abstractions
 
-CoSyMA is a tool for automatic controller synthesis for incrementally stable switched systems based on multi-scale discrete abstractions. The tool ensures significant performance gains during the controller synthesis.
+[CoSyMA](http://multiscale-dcs.gforge.inria.fr/) is a tool for automatic controller synthesis for incrementally stable switched systems based on multi-scale discrete abstractions. The tool ensures significant performance gains during the controller synthesis.
 
 ## Input
 
