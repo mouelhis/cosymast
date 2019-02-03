@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -ne 1 ] 
+then 
+    echo "USAGE: $0 <file>.conf"
+fi
+
+./cosyma parse $1
+./cosyma synthesis
