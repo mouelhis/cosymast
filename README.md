@@ -10,6 +10,10 @@ A description of a switched system represented by a set of differential equation
 
 A controller -- if it exists -- for the system that enforces a given safety or time-bounded reachability specification. 
 
+## Documentation
+
+Consult the tool's [manual](https://hal.archives-ouvertes.fr/hal-00743982).
+
 ## Installation process
 
 ### Requirements
@@ -35,13 +39,19 @@ all: profiling-native-code # profiling
 4. Variable `LIBS̀̀` is set to standard libraries: `LIBS = str unix`
 5. Variable `TRASH` is set to clean the project: `TRASH = *~ #*# *.cmo *.cmi *.mli *.o *.cmx ...` 
  
- Compilation: `make` 
+Compilation: `make` 
  
- Clean: `make clean`
+Clean: `make clean`
  
- ### Execution
+### Execution
 
- 1. `<path>/cosyma parse <file>.conf` (some examples are provided)
- 2. `<path>/cosyma synthesis` 
+1. `<path>/cosyma parse <file>.conf` (some examples are provided)
+2. `<path>/cosyma synthesis` 
   
- The script `run` launches both of them by passing `<file>.conf` as argument.
+The script `run` launches both of them by passing `<file>.conf` as argument.
+ 
+## Plot  
+
+A file `plot.tikz` (representation of the controller abstraction) is generated after the synthesis process. 
+
+Run `<path>/tikz2pdf plot.tikz` to generate the PDF plot (this may take some time if the abstraction is big).
