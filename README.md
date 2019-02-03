@@ -37,7 +37,7 @@ all: profiling-native-code # profiling
 2. Variable `RESULT` is set to the project executable: `RESULT = cosyma`
 3. Variable `PACKS` is set to the list of external packages: `PACKS = extlib`
 4. Variable `LIBS̀̀` is set to standard libraries: `LIBS = str unix`
-5. Variable `TRASH` is set to clean the project: `TRASH = *~ #*# *.cmo *.cmi *.mli *.o *.cmx ...` 
+5. Variable `TRASH` is set to clean the project: `TRASH = *~ *.cmo *.cmi *.mli *.o *.cmx ...` 
  
 Compilation: `make` 
  
