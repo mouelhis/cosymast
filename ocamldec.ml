@@ -139,10 +139,10 @@ let target4 =
 (* the vector fields for x *)
 
 let f_x_0 (t:float) (x:float_vector) = 
- (vector_float_plus (matrix_vector_float_prod (get_float_matrix_from_tfunmat t aa1) x) (get_float_vector_from_tfunvec t bb1))
+ (vector_float_plus (matrix_vector_float_prod (get_float_matrix_from_tfunmat t a1) x) (get_float_vector_from_tfunvec t b))
 
 let f_x_1 (t:float) (x:float_vector) = 
- (vector_float_plus (matrix_vector_float_prod (get_float_matrix_from_tfunmat t aa2) x) (get_float_vector_from_tfunvec t bb2))
+ (vector_float_plus (matrix_vector_float_prod (get_float_matrix_from_tfunmat t a2) x) (get_float_vector_from_tfunvec t b))
 
 let vfs_x () = 
  let res = H.create 0 in
@@ -155,20 +155,20 @@ let vfs () =
  H.add res "x" (vfs_x ());
  res
 
-let tau = 4.
+let tau = 64. *. 0.5
 
-let eta = (4. *. sqrt (2.)) /. 100.
+let eta = 64. *. 3. *. (10. ** -4.)
 
-let fscale = 3
+let fscale = 6
 
-let sdwell = 1
+let sdwell = -1
 
 let lat = {
  dim = dim;
  eta = eta;
  scales = fscale;
- safe = safe4_bad_1;
- initial = safe4_bad_1;
+ safe = safe5;
+ initial = safe5;
  target = Obj.magic ()
 }
 
@@ -177,7 +177,7 @@ let sys = H.find (vfs ()) "x"
 let synthesis () = 
  let symbo = initialize_symbolic tau lat mds (sdwell = -1) in
  let stime = Sys.time () in
- lazy_safety_synthesis symbo sys 0.050000 sdwell 2;
+ lazy_safety_synthesis symbo sys 0.000000 sdwell 2;
  let etime = Sys.time () in
  Printf.printf "Ended in %f seconds\n" (etime -. stime);
  Printf.printf "The abstraction size is %d states\n" (Lts.size symbo.lts);
@@ -186,4 +186,7 @@ let synthesis () =
  Printf.printf "Proportion of transitions of duration %.3f is %.2f\n" ((2.0 ** (-1.0)) *. tau) (Lts.proportion symbo.lts 1);
  Printf.printf "Proportion of transitions of duration %.3f is %.2f\n" ((2.0 ** (-2.0)) *. tau) (Lts.proportion symbo.lts 2);
  Printf.printf "Proportion of transitions of duration %.3f is %.2f\n" ((2.0 ** (-3.0)) *. tau) (Lts.proportion symbo.lts 3);
- plot_2d_dots symbo 1.000 1.000 [7; 6; 5; 4; 3; 2; 1; 0] true [|"black"; "lightgray"|] [|"lightgray"; "gray65"; "gray85"; "black"|] (sdwell = -1) (aindex "m2" symbo.modes)
+ Printf.printf "Proportion of transitions of duration %.3f is %.2f\n" ((2.0 ** (-4.0)) *. tau) (Lts.proportion symbo.lts 4);
+ Printf.printf "Proportion of transitions of duration %.3f is %.2f\n" ((2.0 ** (-5.0)) *. tau) (Lts.proportion symbo.lts 5);
+ Printf.printf "Proportion of transitions of duration %.3f is %.2f\n" ((2.0 ** (-6.0)) *. tau) (Lts.proportion symbo.lts 6);
+ plot_trajectory symbo (safety_control symbo sys [|1.35; 5.5|] 200.000000 0.050000 6) 20.000 20.000 true true

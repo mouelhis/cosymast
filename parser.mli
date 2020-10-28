@@ -1,0 +1,79 @@
+type token =
+  | EOF
+  | COMMA
+  | SEMICOLON
+  | IN
+  | OPEN
+  | CLOSE
+  | OPEN_PAREN
+  | CLOSE_PAREN
+  | OPEN_BRACKET
+  | CLOSE_BRACKET
+  | DEFINITION
+  | MAP
+  | REALS
+  | VECTOR
+  | MATRIX
+  | PLUS
+  | MINUS
+  | TIMES
+  | DIVIDE
+  | MODULUS
+  | POWER
+  | EQUALS
+  | SINE
+  | COSINE
+  | TANGENT
+  | COTANGENT
+  | SECANT
+  | COSECANT
+  | ARCSINE
+  | ARCCOSINE
+  | ARCTANGENT
+  | HYPSINE
+  | HYPCOSINE
+  | HYPTANGENT
+  | SQUAREROOT
+  | NATLOGARITHM
+  | EXPONENTIAL
+  | LOGARITHM
+  | SWITCHED
+  | DIMENSION
+  | MODES
+  | CONSTANTS
+  | VARIABLES
+  | TRAJECTORIES
+  | COEFFICIENTS
+  | VECTORFIELDS
+  | SAMPLING
+  | SAFETY
+  | REACHABILITY
+  | PLOT2D
+  | PLOT2DOF3D
+  | PLOT2DOF4D
+  | SIMULATION
+  | DISCRETE
+  | CONTINUOUS
+  | TIME
+  | TAU
+  | ETA
+  | FINERSCALE
+  | SCALEMINDWELL
+  | WHEN
+  | FOR
+  | BELONGS
+  | THEN
+  | ELSE
+  | SIMPLIFIED
+  | EXPANDED
+  | SETIMES
+  | SETMINUS
+  | ID of (string)
+  | ENUMFIELD of (string)
+  | INTEGER of (int)
+  | NATURAL of (int)
+  | INTERVAL of (float * float)
+  | REAL of (float)
+
+val specification :
+  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> Typecheck.ast
