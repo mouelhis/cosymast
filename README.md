@@ -14,14 +14,14 @@ A controller -- if it exists -- for the system that enforces a given safety or t
 
 Consult the tool's [manual](https://hal.archives-ouvertes.fr/hal-00743982).
 
-## Installation process
+## Linux installation/usage process
 
 ### Requirements
 
-1. O'Caml version 3.12.1 or higher;
-2. Native code compilers of the OCaml suite (packages ocaml-native-compilers);
-3. Extlib library 1.5.2 or higher (http://code.google.com/p/ocaml-extlib/downloads/list);
-4. LaTeX and PGF/TikZ packages for producing vector graphics.
+1. OCaml version 3.12.1 or higher
+2. The FindLib OCaml library 1.7.3 or higer (package ocaml-findlib)
+3. Extlib library 1.5.2 or higher (packages libextlib-ocaml and libextlib-ocaml-dev)
+4. LaTeX & PGF/TikZ packages
  
 ### Compilation 
 
@@ -50,8 +50,12 @@ Clean: `make clean`
   
 The script `run` launches both of them by passing `<file>.conf` as argument.
  
-## Plot  
+### Plot  
 
 A file `plot.tikz` (representation of the controller abstraction) is generated after the synthesis process. 
 
 Run `<path>/tikz2pdf plot.tikz` to generate the PDF plot (this may take some time if the abstraction is big).
+
+## Winodws/Mac process 
+
+Not provided.
