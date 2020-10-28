@@ -14,5 +14,3 @@ PACKS = extlib
 # Compilation mode : native-code, byte-code, debug-code, profiling-native-code
 all:native-code  
 -include OCamlMakefile
-
-# commit test 

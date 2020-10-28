@@ -539,22 +539,6 @@ let soc  = string_of_char
 let soff f = 
   let i = int_of_float f in
   if float_of_int i -. f = 0. then soi i else sof f
-
-(** [ios] with debug instructions *)
-let iosd debug_msg x = try int_of_string x with Failure("int_of_string") -> begin
-  pf "Conversion from string to number failed on token '%s'.\nReason: \"%s\"\n" x debug_msg ; 
-  failwith "Cannot continue after type conversion failure." end 
-  
-(** [ios] with zero in case of failure *)
-let iosz x = try int_of_string x with Failure("int_of_string") -> 0
-
-(** [fos] with zero in case of failure *)
-let fosz x = try float_of_string x with Failure("float_of_string") -> 0.
-
-(** [fos] with debug instructions *)
-let fosd debug_msg x = try float_of_string x with Failure("float_of_string") -> begin
-  pf "Conversion from string to float failed on token '%s'.\nReason: \"%s\"\n" x debug_msg ; 
-  failwith "Cannot continue after type conversion failure." end
   
 
 (**
@@ -716,14 +700,6 @@ let hue = Unix.handle_unix_error
 let open_out_append path = 
   open_out_gen [Open_wronly; Open_creat ; Open_append; Open_text] 0o666 path
 
-
-(** Get a valid port number (that is, between 0 and 65535) from a string, or fail *)    
-let getport p = let res = iosd "Invalid port number" p in
-  if res < 0 || res > 65535 then begin
-      pf "'%d' is not a valid port number. Must be in [0, 65535]\n" res;
-      failwith "Incorrect port number"; end 
-  else res
-     
 
 (** DEBUG: quickly display what processus I'm in *)
 let pidd s = pf "I am %s (%d)\n%!" (String.uppercase s) (Unix.getpid())

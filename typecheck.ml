@@ -202,7 +202,7 @@ let get_xps
   let rec sub tt =
     (match tt with
       | Time -> if !tp = false then tp := true ; "t"
-      | Id id -> String.lowercase id
+      | Id id -> String.lowercase_ascii id
       | Natural n -> string_of_float (float n)
       | Integer i -> string_of_float (float i)
       | Real r -> string_of_float r
@@ -444,12 +444,12 @@ let get_coefficients
                                       check_coefficients_xps e cts ;
                                       let se = get_xps e cts in
                                       if snd se then
-                                        Buffer.add_string b @@ va "let %s_%d_%d (t:float) = %s\n" (String.lowercase cff) !i !j (fst se)
+                                        Buffer.add_string b @@ va "let %s_%d_%d (t:float) = %s\n" (String.lowercase_ascii cff) !i !j (fst se)
                                       else
                                         begin
-                                          Buffer.add_string b @@ va "let %s_%d_%d = %s\n" ((String.lowercase cff) ^ "_val") !i !j (fst se) ;
+                                          Buffer.add_string b @@ va "let %s_%d_%d = %s\n" ((String.lowercase_ascii cff) ^ "_val") !i !j (fst se) ;
                                           Buffer.add_string b @@ va "let %s_%d_%d (t:float) = %s_%d_%d\n\n"
-                                             (String.lowercase cff) !i !j ((String.lowercase cff)^ "_val") !i !j
+                                             (String.lowercase_ascii cff) !i !j ((String.lowercase_ascii cff)^ "_val") !i !j
                                         end
                                     end
                                    | _ -> failwith "typecheck(get_coefficients:bad ast!)");
@@ -462,13 +462,13 @@ let get_coefficients
                           Buffer.add_string b @@ va "[|";
                           for j = 0 to lg -1 do
                             if j < lg - 1 then
-                              Buffer.add_string b @@ va "%s_%d_%d ; " (String.lowercase cff) i j
+                              Buffer.add_string b @@ va "%s_%d_%d ; " (String.lowercase_ascii cff) i j
                             else
-                              Buffer.add_string b @@ va "%s_%d_%d" (String.lowercase cff) i j
+                              Buffer.add_string b @@ va "%s_%d_%d" (String.lowercase_ascii cff) i j
                           done;
                           Buffer.add_string b @@ va "|]"
                         in
-                        Buffer.add_string b @@ va "let %s = [|" (String.lowercase cff);
+                        Buffer.add_string b @@ va "let %s = [|" (String.lowercase_ascii cff);
                         for i = 0 to lg -1 do
                           if i < lg - 1 then (print_vec i; Buffer.add_string b @@ va "; ")
                           else print_vec i
@@ -490,20 +490,20 @@ let get_coefficients
                                 check_coefficients_xps e cts ;
                                 let se = get_xps e cts in
                                 if snd se then
-                                  Buffer.add_string b @@ va "let %s_%d (t:float) = %s\n" (String.lowercase cff) !i (fst se)
+                                  Buffer.add_string b @@ va "let %s_%d (t:float) = %s\n" (String.lowercase_ascii cff) !i (fst se)
                                 else
                                   begin
-                                    Buffer.add_string b @@ va "let %s_%d = %s\n" ((String.lowercase cff) ^ "_val") !i (fst se) ;
-                                    Buffer.add_string b @@ va "let %s_%d (t:float) = %s_%d\n\n" (String.lowercase cff) !i ((String.lowercase cff)^ "_val") !i
+                                    Buffer.add_string b @@ va "let %s_%d = %s\n" ((String.lowercase_ascii cff) ^ "_val") !i (fst se) ;
+                                    Buffer.add_string b @@ va "let %s_%d (t:float) = %s_%d\n\n" (String.lowercase_ascii cff) !i ((String.lowercase_ascii cff)^ "_val") !i
                                   end
                               end ;
                               i := !i + 1
                             | _ -> failwith "typecheck(get_coefficients:bad ast!)")
                         in List.iter iter_elems elems_vec ;
-                        Buffer.add_string b @@ va "let %s = [|" (String.lowercase cff);
+                        Buffer.add_string b @@ va "let %s = [|" (String.lowercase_ascii cff);
                         for j = 0 to lg -1 do
-                          if j < lg - 1 then Buffer.add_string b @@ va "%s_%d ; " (String.lowercase cff) j
-                          else Buffer.add_string b @@ va "%s_%d" (String.lowercase cff) j
+                          if j < lg - 1 then Buffer.add_string b @@ va "%s_%d ; " (String.lowercase_ascii cff) j
+                          else Buffer.add_string b @@ va "%s_%d" (String.lowercase_ascii cff) j
                         done;
                         Buffer.add_string b @@ va "|]\n\n";
                       end
@@ -511,11 +511,11 @@ let get_coefficients
                     begin
                       check_coefficients_xps e cts ;
                       let se = get_xps e cts in
-                      if snd se then Buffer.add_string b @@ va "let %s (t:float) = %s\n\n" (String.lowercase cff) (fst se)
+                      if snd se then Buffer.add_string b @@ va "let %s (t:float) = %s\n\n" (String.lowercase_ascii cff) (fst se)
                       else
                         begin
-                          Buffer.add_string b @@ va "let %s = %s\n" ((String.lowercase cff) ^ "_val") (fst se) ;
-                          Buffer.add_string b @@ va "let %s (t:float) = %s\n\n" (String.lowercase cff) ((String.lowercase cff)^ "_val")
+                          Buffer.add_string b @@ va "let %s = %s\n" ((String.lowercase_ascii cff) ^ "_val") (fst se) ;
+                          Buffer.add_string b @@ va "let %s (t:float) = %s\n\n" (String.lowercase_ascii cff) ((String.lowercase_ascii cff)^ "_val")
                         end
                     end
                   | _ -> failwith "typecheck(get_coefficients:bad ast!)")
@@ -548,7 +548,7 @@ let get_spaces
               (error "typecheck:get_spaces" "the number of boundaries intervals of the state space defining '%s' must be equal to %d!\n" id ddim;
                exit semantic_analysis_error)
             else
-              Buffer.add_string b @@ va "let %s = \n " (String.lowercase id);
+              Buffer.add_string b @@ va "let %s = \n " (String.lowercase_ascii id);
               Buffer.add_string b @@ va " Sp ([|";
               let k = ref 0 in
               let lg = listlen bounds in
@@ -580,7 +580,7 @@ let get_spaces
               (error "typecheck:get_spaces" "the number of boundaries intervals of the state spaces defining '%s' must be equal to %d!\n" id ddim;
                exit semantic_analysis_error)
             else
-              Buffer.add_string b @@ va "let %s = \n " (String.lowercase id);
+              Buffer.add_string b @@ va "let %s = \n " (String.lowercase_ascii id);
               Buffer.add_string b @@ va " SpMinusSp ([|";
               let k = ref 0 in
               let lg = listlen bounds1 in
@@ -684,7 +684,7 @@ let get_simplifiedvf_xp
             | _ -> failwith "typecheck(get_simplifiedvf_xps:bad ast!)")
         end;
         Buffer.add_string bb @@ va "(vector_float_plus (matrix_vector_float_prod (get_float_matrix_from_tfunmat t %s) %s) (get_float_vector_from_tfunvec t %s))"
-        (String.lowercase a) traj (String.lowercase b)
+        (String.lowercase_ascii a) traj (String.lowercase_ascii b)
     (* other linear system kinds can be added here *)
     | _ -> failwith "typecheck(get_simplifiedvf_xps:bad ast!)"
 
@@ -734,7 +734,7 @@ let get_expandedvf_xps
       | Time -> "t"
       | Id id ->
         if id = "pi" then "pi"
-        else if H.mem cts id then String.lowercase id
+        else if H.mem cts id then String.lowercase_ascii id
         else if H.mem vars id then
           if List.exists (fun x -> x = id) (H.find trajs traj) then
             begin
@@ -753,7 +753,7 @@ let get_expandedvf_xps
             end
         else if H.mem coefs id then
           (match H.find coefs id with
-            | (VT_realtoreal | VT_realtointerval _) -> (String.lowercase id) ^ " t"
+            | (VT_realtoreal | VT_realtointerval _) -> (String.lowercase_ascii id) ^ " t"
             | _ -> failwith "typecheck(get_expandedvf_xps: bad coefficient !)")
         else failwith "typecheck(get_expandedvf_xps: bad identifier !)"
       | Natural n -> string_of_float (float n)
@@ -864,7 +864,7 @@ let get_vectorfields
         let iter1 vf =
           match vf with
             | Vector_field_for (Id traj, definition) ->
-              Buffer.add_string b @@ va "(* the vector fields for %s *)\n\n" (String.lowercase traj);
+              Buffer.add_string b @@ va "(* the vector fields for %s *)\n\n" (String.lowercase_ascii traj);
               if H.mem vecfs traj then
                 (error "typecheck:get_vectorfields" "the vector fields for %s was defined before!\n" traj;
                  exit semantic_analysis_error)
@@ -910,11 +910,11 @@ let get_vectorfields
                                               let buff_md = List.nth !buffs_by_modes imd in
                                               if Buffer.contents !buff_md = "" then
                                                 begin
-                                                  Buffer.add_string !buff_md @@ va "let f_%s_%d (t:float) (%s:float_vector) = \n" (String.lowercase traj) (lindex ef mds) (String.lowercase traj);
-                                                  Buffer.add_string !buff_md @@ va " if in_simple_space %d %s %s then \n  " ddim (String.lowercase traj) spc
+                                                  Buffer.add_string !buff_md @@ va "let f_%s_%d (t:float) (%s:float_vector) = \n" (String.lowercase_ascii traj) (lindex ef mds) (String.lowercase_ascii traj);
+                                                  Buffer.add_string !buff_md @@ va " if in_simple_space %d %s %s then \n  " ddim (String.lowercase_ascii traj) spc
                                                 end
-                                              else Buffer.add_string !buff_md @@ va " else if in_simple_space %d %s %s then \n  " ddim (String.lowercase traj) spc;
-                                              get_simplifiedvf_xp !buff_md exp (List.length (H.find trajs tid)) cts vars trajs coefs (String.lowercase traj);
+                                              else Buffer.add_string !buff_md @@ va " else if in_simple_space %d %s %s then \n  " ddim (String.lowercase_ascii traj) spc;
+                                              get_simplifiedvf_xp !buff_md exp (List.length (H.find trajs tid)) cts vars trajs coefs (String.lowercase_ascii traj);
                                               Buffer.add_string !buff_md @@ va "\n"
                                             end
                                         end
@@ -946,8 +946,8 @@ let get_vectorfields
                                                 check_expandedvf_xps evf traj cts vars trajs coefs ;
                                                 vecofv := tvar :: !vecofv ;
                                                 Buffer.add_string b @@ va "let f_%s_%d_%d_%d (%s:float_vector) (t:float) = \n "
-                                                  (String.lowercase traj) !idx_case (lindex ef mds) (lindex tvar (H.find trajs traj)) (String.lowercase traj) ;
-                                                Buffer.add_string b @@ va " %s\n\n" (get_expandedvf_xps evf cts vars trajs coefs (String.lowercase traj))
+                                                  (String.lowercase_ascii traj) !idx_case (lindex ef mds) (lindex tvar (H.find trajs traj)) (String.lowercase_ascii traj) ;
+                                                Buffer.add_string b @@ va " %s\n\n" (get_expandedvf_xps evf cts vars trajs coefs (String.lowercase_ascii traj))
                                               end
                                           end
                                       | _ -> failwith "typecheck(get_vectorfields: bad ast!)"
@@ -957,20 +957,20 @@ let get_vectorfields
                                   if Buffer.contents !buff_md = "" then
                                     begin
                                       Buffer.add_string !buff_md @@ va "let f_%s_%d (t:float) (%s:float_vector) = \n"
-                                        (String.lowercase traj) (lindex ef mds) (String.lowercase traj);
+                                        (String.lowercase_ascii traj) (lindex ef mds) (String.lowercase_ascii traj);
                                       Buffer.add_string !buff_md @@ va " if in_simple_space %d %s %s then \n  "
-                                        ddim (String.lowercase traj) spc
+                                        ddim (String.lowercase_ascii traj) spc
                                     end
-                                  else Buffer.add_string !buff_md @@ va " else if in_simple_space %d %s %s then \n  " ddim (String.lowercase traj) spc;
+                                  else Buffer.add_string !buff_md @@ va " else if in_simple_space %d %s %s then \n  " ddim (String.lowercase_ascii traj) spc;
                                   Buffer.add_string !buff_md @@ va "get_float_vector_from_tfunvec t [|";
                                   let lg = listlen (H.find trajs traj) in
                                   for i = 0 to lg - 1 do
                                     if i < lg - 1 then
                                       Buffer.add_string !buff_md @@ va "f_%s_%d_%d_%d %s; "
-                                        (String.lowercase traj) !idx_case (lindex ef mds) i (String.lowercase traj)
+                                        (String.lowercase_ascii traj) !idx_case (lindex ef mds) i (String.lowercase_ascii traj)
                                     else
                                       Buffer.add_string !buff_md @@ va "f_%s_%d_%d_%d %s|]"
-                                        (String.lowercase traj) !idx_case (lindex ef mds) i (String.lowercase traj)
+                                        (String.lowercase_ascii traj) !idx_case (lindex ef mds) i (String.lowercase_ascii traj)
                                   done;
                                   Buffer.add_string !buff_md @@ va "\n";
                                 | _  -> failwith "typecheck(check_cases: bad ast!)"
@@ -1001,7 +1001,7 @@ let get_vectorfields
                                               let imd = (lindex ef mds) in
                                               let buff_md = List.nth !buffs_by_modes imd in
                                               Buffer.add_string !buff_md @@ va " else \n  ";
-                                              get_simplifiedvf_xp !buff_md exp (List.length (H.find trajs tid)) cts vars trajs coefs (String.lowercase traj);
+                                              get_simplifiedvf_xp !buff_md exp (List.length (H.find trajs tid)) cts vars trajs coefs (String.lowercase_ascii traj);
                                               Buffer.add_string !buff_md @@ va "\n"
                                             end
                                         end
@@ -1033,8 +1033,8 @@ let get_vectorfields
                                                 check_expandedvf_xps evf traj cts vars trajs coefs ;
                                                 vecofv := tvar :: !vecofv ;
                                                 Buffer.add_string b @@ va "let f_%s_%d_%d_%d (%s:float_vector) (t:float) = \n "
-                                                  (String.lowercase traj) (List.length cases -1)  (lindex ef mds) (lindex tvar (H.find trajs traj)) (String.lowercase traj);
-                                                Buffer.add_string b @@ va " %s\n\n" (get_expandedvf_xps evf cts vars trajs coefs (String.lowercase traj))
+                                                  (String.lowercase_ascii traj) (List.length cases -1)  (lindex ef mds) (lindex tvar (H.find trajs traj)) (String.lowercase_ascii traj);
+                                                Buffer.add_string b @@ va " %s\n\n" (get_expandedvf_xps evf cts vars trajs coefs (String.lowercase_ascii traj))
                                               end
                                           end
                                       | _ -> failwith "typecheck(get_vectorfields: bad ast!)"
@@ -1047,10 +1047,10 @@ let get_vectorfields
                                   for i = 0 to lg - 1 do
                                     if i < lg - 1 then
                                       Buffer.add_string !buff_md @@ va "f_%s_%d_%d_%d %s; "
-                                        (String.lowercase traj) (List.length cases -1) (lindex ef mds) i (String.lowercase traj)
+                                        (String.lowercase_ascii traj) (List.length cases -1) (lindex ef mds) i (String.lowercase_ascii traj)
                                     else
                                       Buffer.add_string !buff_md @@ va "f_%s_%d_%d_%d %s|]"
-                                        (String.lowercase traj) (List.length cases -1) (lindex ef mds) i (String.lowercase traj)
+                                        (String.lowercase_ascii traj) (List.length cases -1) (lindex ef mds) i (String.lowercase_ascii traj)
                                   done;
                                   Buffer.add_string !buff_md @@ va "\n";
                                   H.add vfofmd (lindex ef mds) ()
@@ -1062,8 +1062,8 @@ let get_vectorfields
                         Buffer.add_buffer b !buff_md;
                         Buffer.add_string b @@ va "\n"
                       in List.iter copy !buffs_by_modes;
-                      Buffer.add_string b @@ va "let vfs_%s () = \n let res = H.create 0 in\n" (String.lowercase traj);
-                      for k = 0 to listlen mds - 1 do Buffer.add_string b @@ va " H.add res %d f_%s_%d;\n" k (String.lowercase traj) k done;
+                      Buffer.add_string b @@ va "let vfs_%s () = \n let res = H.create 0 in\n" (String.lowercase_ascii traj);
+                      for k = 0 to listlen mds - 1 do Buffer.add_string b @@ va " H.add res %d f_%s_%d;\n" k (String.lowercase_ascii traj) k done;
                       Buffer.add_string b @@ va " res\n\n";
                       H.add vecfs traj vfofmd
                     | Unique_case (modes) ->
@@ -1097,8 +1097,8 @@ let get_vectorfields
                                     else
                                       begin
                                         Buffer.add_string b @@ va "let f_%s_%d (t:float) (%s:float_vector) = \n "
-                                          (String.lowercase traj) (lindex ef mds) (String.lowercase traj);
-                                        get_simplifiedvf_xp b exp (List.length (H.find trajs tid)) cts vars trajs coefs (String.lowercase traj);
+                                          (String.lowercase_ascii traj) (lindex ef mds) (String.lowercase_ascii traj);
+                                        get_simplifiedvf_xp b exp (List.length (H.find trajs tid)) cts vars trajs coefs (String.lowercase_ascii traj);
                                         Buffer.add_string b @@ va "\n\n";
                                       end;
                                       H.add vfofmd (lindex ef mds) ()
@@ -1139,26 +1139,26 @@ let get_vectorfields
                                               check_expandedvf_xps evf traj cts vars trajs coefs ;
                                               vecofv := tvar :: !vecofv ;
                                               Buffer.add_string b @@ va "let f_%s_%d_%d (%s:float_vector) (t:float) = \n "
-                                                (String.lowercase traj) (lindex ef mds) (lindex tvar (H.find trajs traj)) (String.lowercase traj) ;
-                                              Buffer.add_string b @@ va " %s\n\n" (get_expandedvf_xps evf cts vars trajs coefs (String.lowercase traj))
+                                                (String.lowercase_ascii traj) (lindex ef mds) (lindex tvar (H.find trajs traj)) (String.lowercase_ascii traj) ;
+                                              Buffer.add_string b @@ va " %s\n\n" (get_expandedvf_xps evf cts vars trajs coefs (String.lowercase_ascii traj))
                                             end
                                         end
                                     | _ -> failwith "typecheck(get_vectorfields: bad ast!)"
                                 end
                             in List.iter iter5 expds;
                             Buffer.add_string b @@ va "let f_%s_%d (t:float) (%s:float_vector) = \n "
-                              (String.lowercase traj) (lindex ef mds) (String.lowercase traj);
+                              (String.lowercase_ascii traj) (lindex ef mds) (String.lowercase_ascii traj);
                             Buffer.add_string b @@ va "get_float_vector_from_tfunvec t [|";
                             let lg = listlen (H.find trajs traj) in
                             for i = 0 to lg - 1 do
-                              if i < lg - 1 then Buffer.add_string b @@ va "f_%s_%d_%d %s; " (String.lowercase traj) (lindex ef mds) i (String.lowercase traj)
-                              else Buffer.add_string b @@ va "f_%s_%d_%d %s|] \n\n" (String.lowercase traj) (lindex ef mds) i (String.lowercase traj)
+                              if i < lg - 1 then Buffer.add_string b @@ va "f_%s_%d_%d %s; " (String.lowercase_ascii traj) (lindex ef mds) i (String.lowercase_ascii traj)
+                              else Buffer.add_string b @@ va "f_%s_%d_%d %s|] \n\n" (String.lowercase_ascii traj) (lindex ef mds) i (String.lowercase_ascii traj)
                             done;
                             H.add vfofmd (lindex ef mds) ()
                           | _  -> failwith "typecheck(get_vectorfields: bad ast!)"
                       in List.iter iter4 modes;
-                      Buffer.add_string b @@ va "let vfs_%s () = \n let res = H.create 0 in\n" (String.lowercase traj);
-                      for k = 0 to listlen mds - 1 do Buffer.add_string b @@ va " H.add res %d f_%s_%d;\n" k (String.lowercase traj) k done;
+                      Buffer.add_string b @@ va "let vfs_%s () = \n let res = H.create 0 in\n" (String.lowercase_ascii traj);
+                      for k = 0 to listlen mds - 1 do Buffer.add_string b @@ va " H.add res %d f_%s_%d;\n" k (String.lowercase_ascii traj) k done;
                       Buffer.add_string b @@ va " res\n\n";
                       H.add vecfs traj vfofmd
                     | _ -> failwith "typecheck(get_vectorfields: bad ast!)"
@@ -1167,7 +1167,7 @@ let get_vectorfields
         in List.iter iter1 vfs;
         Buffer.add_string b @@ va "let vfs () = \n let res = H.create 0 in \n";
         let iter6 trj _ =
-          Buffer.add_string b @@ va " H.add res \"%s\" (vfs_%s ());\n" (String.lowercase trj) (String.lowercase trj)
+          Buffer.add_string b @@ va " H.add res \"%s\" (vfs_%s ());\n" (String.lowercase_ascii trj) (String.lowercase_ascii trj)
         in H.iter iter6 vecfs;
         Buffer.add_string b @@ va " res\n\n";
       | _  -> failwith "typecheck(get_vectorfields: bad ast!)"
@@ -1302,11 +1302,11 @@ let synthesis
             Buffer.add_string b @@ va " dim = dim;\n";
             Buffer.add_string b @@ va " eta = eta;\n";
             Buffer.add_string b @@ va " scales = fscale;\n";
-            Buffer.add_string b @@ va " safe = %s;\n" (String.lowercase saf);
-            Buffer.add_string b @@ va " initial = %s;\n" (String.lowercase ini);
+            Buffer.add_string b @@ va " safe = %s;\n" (String.lowercase_ascii saf);
+            Buffer.add_string b @@ va " initial = %s;\n" (String.lowercase_ascii ini);
             Buffer.add_string b @@ va " target = Obj.magic ()\n";
             Buffer.add_string b @@ va "}\n\n";
-            Buffer.add_string b @@ va "let sys = H.find (vfs ()) \"%s\" \n\n" (String.lowercase tr);
+            Buffer.add_string b @@ va "let sys = H.find (vfs ()) \"%s\" \n\n" (String.lowercase_ascii tr);
             Buffer.add_string b @@ va "let synthesis () = \n";
             Buffer.add_string b @@ va " let symbo = initialize_symbolic tau lat mds (sdwell = -1) in\n" ;
             Buffer.add_string b @@ va " let stime = Sys.time () in\n";
@@ -1390,11 +1390,11 @@ let synthesis
             Buffer.add_string b @@ va " dim = dim;\n";
             Buffer.add_string b @@ va " eta = eta;\n";
             Buffer.add_string b @@ va " scales = fscale;\n";
-            Buffer.add_string b @@ va " safe = %s;\n" (String.lowercase saf);
-            Buffer.add_string b @@ va " initial = %s;\n" (String.lowercase ini);
-            Buffer.add_string b @@ va " target = %s\n" (String.lowercase tgt);
+            Buffer.add_string b @@ va " safe = %s;\n" (String.lowercase_ascii saf);
+            Buffer.add_string b @@ va " initial = %s;\n" (String.lowercase_ascii ini);
+            Buffer.add_string b @@ va " target = %s\n" (String.lowercase_ascii tgt);
             Buffer.add_string b @@ va "}\n\n";
-            Buffer.add_string b @@ va "let sys = H.find (vfs ()) \"%s\" \n\n" (String.lowercase tr);
+            Buffer.add_string b @@ va "let sys = H.find (vfs ()) \"%s\" \n\n" (String.lowercase_ascii tr);
             Buffer.add_string b @@ va "let synthesis () = \n";
             Buffer.add_string b @@ va " let symbo = initialize_symbolic tau lat mds (sdwell = -1) in\n";
             Buffer.add_string b @@ va " let stime = Sys.time () in\n";
