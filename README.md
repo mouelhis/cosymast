@@ -8,7 +8,9 @@ A description of a switched system represented by a set of differential equation
 
 ## Output
 
-A controller -- if it exists -- for the system that enforces a given safety or time-bounded reachability specification. 
+A controller -- if it exists -- for the system that enforces a given safety or time-bounded reachability specification.
+
+![Local Image](./cosyma.png)
 
 ## Documentation
 
